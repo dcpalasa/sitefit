@@ -1,14 +1,48 @@
+# SiteFit
 
-I think this version is **better for your GitHub specifically** because it contains little details a real person naturally mentions, like:
+SiteFit is a commercial real estate comparison tool I built using property listings from Wake County, NC.
 
-> “I kept the scoring system fairly simple on purpose…”
+The project originally started as a Java class project where I loaded property data from a CSV file, filtered properties based on a user's budget and business type, and compared two properties by things like price, lot size, city population, and business suitability.
 
-and
+I liked the idea, so I decided to turn it into a larger personal project instead of leaving it as a console program.
 
-> “I liked the idea, so I decided to turn it into a larger personal project…”
+The current version has a web interface, more property data, interactive filters, a map, property scoring, and side-by-side comparisons.
 
-Those sound much more like a student describing something they actually worked on instead of a product team marketing software.
+## Features
 
-I’d also **remove the “Good resume bullet” section entirely** from the public README. That part especially makes the repo feel like it was packaged for you rather than written as project documentation.
+- Search and filter commercial properties
+- Filter by city, property type, price, acreage, and building size
+- Choose a business type and see which properties fit it better
+- Compare up to 3 properties at once
+- View properties on an interactive map
+- Calculate price per square foot and other property metrics
+- Use population and population growth as part of the location score
+- Import newer property data from an Excel file
+- Run the full application locally with Java
+- Host a demo version using GitHub Pages
 
-One other change: I like the name **SiteFit**, so I’d keep that. It sounds like a real personal project without trying too hard.
+## Project Structure
+
+```text
+sitefit/
+├── docs/
+│   ├── index.html
+│   ├── styles.css
+│   ├── app.js
+│   └── data/
+│       ├── demo-properties.json
+│       └── city-metrics.json
+│
+├── src/main/java/com/sitefit/
+│   └── SiteFitServer.java
+│
+├── scripts/
+│   └── import_crexi.py
+│
+├── data/
+│   ├── raw/
+│   └── private/
+│
+├── run.bat
+├── run.sh
+└── README.md
