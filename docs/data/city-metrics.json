@@ -1,0 +1,77 @@
+{
+  "source": "North Carolina Office of State Budget and Management, Standard Population Estimates, Vintage 2024",
+  "sourceUrl": "https://www.osbm.nc.gov/facts-figures/population-demographics/state-demographer/municipal-population-estimates/municipal-population-change",
+  "wakeCountyPopulation2024": 1235748,
+  "cities": {
+    "Raleigh": {
+      "population2020": 467911,
+      "population2024": 500639,
+      "growthPct2020to2024": 7.0
+    },
+    "Cary": {
+      "population2020": 174797,
+      "population2024": 187378,
+      "growthPct2020to2024": 7.2
+    },
+    "Apex": {
+      "population2020": 64324,
+      "population2024": 75059,
+      "growthPct2020to2024": 16.7
+    },
+    "Wake Forest": {
+      "population2020": 48006,
+      "population2024": 59199,
+      "growthPct2020to2024": 23.3
+    },
+    "Holly Springs": {
+      "population2020": 41264,
+      "population2024": 49039,
+      "growthPct2020to2024": 18.8
+    },
+    "Fuquay-Varina": {
+      "population2020": 34265,
+      "population2024": 44237,
+      "growthPct2020to2024": 29.1
+    },
+    "Garner": {
+      "population2020": 31383,
+      "population2024": 38509,
+      "growthPct2020to2024": 22.7
+    },
+    "Morrisville": {
+      "population2020": 29811,
+      "population2024": 34021,
+      "growthPct2020to2024": 14.1
+    },
+    "Clayton": {
+      "population2020": 26321,
+      "population2024": 31312,
+      "growthPct2020to2024": 19.0
+    },
+    "Knightdale": {
+      "population2020": 19471,
+      "population2024": 22680,
+      "growthPct2020to2024": 16.5
+    },
+    "Wendell": {
+      "population2020": 9837,
+      "population2024": 16996,
+      "growthPct2020to2024": 72.8
+    },
+    "Rolesville": {
+      "population2020": 9659,
+      "population2024": 11933,
+      "growthPct2020to2024": 23.5
+    },
+    "Zebulon": {
+      "population2020": 6918,
+      "population2024": 9206,
+      "growthPct2020to2024": 33.1
+    },
+    "Elizabeth City": {
+      "population2020": 18649,
+      "population2024": 19807,
+      "growthPct2020to2024": 6.2
+    }
+  }
+}

@@ -1,0 +1,19 @@
+# Build output
+out/
+*.class
+
+# Private / licensed listing data
+data/private/*
+!data/private/.gitkeep
+data/raw/*
+!data/raw/.gitkeep
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
