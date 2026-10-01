@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="SiteFit is a commercial-property comparison and site-selection tool built from a Java console project." />
-  <title>SiteFit — Commercial Property Decision Tool</title>
+  <meta name="description" content="SiteFit is a commercial property screening and comparison tool for Wake County, North Carolina." />
+  <title>SiteFit: Commercial Property Decision Tool</title>
   <link rel="preconnect" href="https://unpkg.com">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIINfQ3yn5IK8ycJ8TIHkn2bV5V7xH+M3qQ=" crossorigin="">
@@ -31,14 +31,13 @@
         <p class="eyebrow">WAKE COUNTY · COMMERCIAL REAL ESTATE</p>
         <h1>Find a property that fits the business, not just the budget.</h1>
         <p class="hero-copy">
-          Filter commercial listings, compare site economics, and rank locations using property fit,
-          market size, population growth, value, and financial signals.
+          Filter commercial listings, compare property economics, and rank locations with a scoring model you can inspect and adjust.
         </p>
       </div>
       <div class="source-card">
         <span class="source-dot"></span>
         <div>
-          <strong id="sourceMode">Loading data…</strong>
+          <strong id="sourceMode">Loading data...</strong>
           <small id="sourceDetail">Connecting to the local Java API or demo dataset.</small>
         </div>
       </div>
@@ -56,7 +55,7 @@
 
         <label class="field">
           <span>Search</span>
-          <input id="searchInput" type="search" placeholder="Address, city, property…" />
+          <input id="searchInput" type="search" placeholder="Address, city, property..." />
         </label>
 
         <label class="field">
@@ -70,6 +69,11 @@
             <option value="MULTIFAMILY">Multifamily</option>
           </select>
         </label>
+
+        <div id="businessProfile" class="profile-note">
+          <strong>General investment profile</strong>
+          <p>Balances property fit, market conditions, value, financial data, and listing completeness.</p>
+        </div>
 
         <label class="field">
           <span>City</span>
@@ -122,18 +126,44 @@
           <span>Include unpriced listings</span>
         </label>
 
+        <details class="weights-panel" id="weightsPanel">
+          <summary>Adjust scoring weights</summary>
+          <p class="weights-help">These start with business-specific defaults. SiteFit normalizes them to 100% automatically.</p>
+          <div class="weight-control">
+            <div><span>Business fit</span><strong id="fitWeightLabel">25%</strong></div>
+            <input id="fitWeight" type="range" min="0" max="60" value="25" />
+          </div>
+          <div class="weight-control">
+            <div><span>Market</span><strong id="marketWeightLabel">25%</strong></div>
+            <input id="marketWeight" type="range" min="0" max="60" value="25" />
+          </div>
+          <div class="weight-control">
+            <div><span>Value</span><strong id="valueWeightLabel">25%</strong></div>
+            <input id="valueWeight" type="range" min="0" max="60" value="25" />
+          </div>
+          <div class="weight-control">
+            <div><span>Financial</span><strong id="financialWeightLabel">15%</strong></div>
+            <input id="financialWeight" type="range" min="0" max="60" value="15" />
+          </div>
+          <div class="weight-control">
+            <div><span>Data quality</span><strong id="completeWeightLabel">10%</strong></div>
+            <input id="completeWeight" type="range" min="0" max="60" value="10" />
+          </div>
+          <button id="profileDefaultsBtn" class="secondary-btn" type="button">Use business defaults</button>
+        </details>
+
         <div class="model-note">
           <strong>Model note</strong>
-          <p>Scores are decision-support heuristics, not appraisals or zoning determinations.</p>
+          <p>Scores help screen listings. They do not verify zoning, traffic, parking, financing, or whether a business will succeed.</p>
         </div>
       </aside>
 
       <section class="results-area">
         <div class="kpi-grid">
-          <article class="kpi"><span>Matches</span><strong id="matchCount">—</strong><small id="matchSub">listings</small></article>
-          <article class="kpi"><span>Median price</span><strong id="medianPrice">—</strong><small>priced matches</small></article>
-          <article class="kpi"><span>Average score</span><strong id="avgScore">—</strong><small>0–100</small></article>
-          <article class="kpi"><span>Cities</span><strong id="cityCount">—</strong><small>represented</small></article>
+          <article class="kpi"><span>Matches</span><strong id="matchCount">-</strong><small id="matchSub">listings</small></article>
+          <article class="kpi"><span>Median price</span><strong id="medianPrice">-</strong><small>priced matches</small></article>
+          <article class="kpi"><span>Average score</span><strong id="avgScore">-</strong><small>0 to 100</small></article>
+          <article class="kpi"><span>Cities</span><strong id="cityCount">-</strong><small>represented</small></article>
         </div>
 
         <div class="toolbar">
@@ -188,7 +218,7 @@
 
   <dialog id="compareDialog" class="dialog">
     <div class="dialog-header">
-      <div><p class="eyebrow">SIDE-BY-SIDE</p><h2>Property comparison</h2></div>
+      <div><p class="eyebrow">SIDE BY SIDE</p><h2>Property comparison</h2></div>
       <button class="icon-btn" data-close="compareDialog" aria-label="Close">×</button>
     </div>
     <div id="compareContent" class="compare-content"></div>
@@ -201,24 +231,23 @@
     </div>
     <div class="method-body">
       <p>
-        SiteFit combines five interpretable signals. The model is intentionally transparent so the score can be explained
-        in an interview, changed in code, and challenged by the user.
+        SiteFit scores each listing with five components. The default weights change with the business type, and you can adjust them in the filter panel.
       </p>
       <div class="weight-list">
-        <div><span>Property / business fit</span><strong>35%</strong></div>
-        <div><span>Local market momentum</span><strong>25%</strong></div>
-        <div><span>Relative value</span><strong>20%</strong></div>
-        <div><span>Financial signal</span><strong>10%</strong></div>
-        <div><span>Data completeness</span><strong>10%</strong></div>
+        <div><span>Business fit</span><strong>Property type and subtype match</strong></div>
+        <div><span>Market</span><strong>Municipal population and recent growth</strong></div>
+        <div><span>Value</span><strong>Relative price and your budget</strong></div>
+        <div><span>Financial</span><strong>Cap rate when the listing provides it</strong></div>
+        <div><span>Data quality</span><strong>How much useful listing data is available</strong></div>
       </div>
       <p>
-        Market momentum uses municipal population and 2020–2024 population growth from the North Carolina Office of State
-        Budget and Management. Property fit uses an explicit compatibility matrix between the selected business use and
-        listing type/subtype. Value is relative to comparable listings in the current dataset and the user's budget.
+        Business fit uses explicit rules instead of a black-box model. For example, a restaurant gets a strong fit score for restaurant, QSR, storefront, retail, and similar listing types. An industrial user puts more weight on warehouse, flex, distribution, and industrial space.
+      </p>
+      <p>
+        Market data currently uses 2024 municipal population estimates and 2020 to 2024 population growth from the North Carolina Office of State Budget and Management. Future versions can add income, traffic, parking, competition, and zoning once those data sources are added.
       </p>
       <div class="warning">
-        This is a screening tool. A high score does not verify zoning, environmental conditions, financing, valuation,
-        title, or the economics of a specific operating business.
+        This is a screening tool. A high score does not verify zoning, environmental conditions, financing, valuation, title, parking, traffic counts, or the economics of a specific business.
       </div>
     </div>
   </dialog>
